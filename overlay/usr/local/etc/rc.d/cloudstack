@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# : /usr/local/etc/rc.d/cloudstack
+#
+
+# PROVIDE: cloudstack
+# REQUIRE: NETWORKING LOGIN
+# KEYWORD: shutdown
+: ${cloudstack_enable="NO"}
+
+cloudstack_prestart()
+{
+        export MAVEN_OPTS="-Djava.net.preferIPv4Stack=true"
+
+        #we need a hack to make sure db have correct master ip
+        netstat -nr | grep lo0 | grep -v '::' | grep -v '127.0.0.1' | awk '{print $1}' | head -n 1 > /root/dhcpip
+        IP=`cat /root/dhcpip`
+
+}
+
+cloudstack_start()
+{
+        cd /usr/local/www/cloudstack
+        /usr/local/bin/mvn -pl :cloud-client-ui jetty:run > /dev/null 2>&1 &
+}
+
+
+cloudstack_stop()
+{
+        cd /usr/local/www/cloudstack
+        /usr/local/bin/mvn -pl :cloud-client-ui jetty:stop
+}
+
+
+. /etc/rc.subr
+
+name=cloudstack
+rcvar=cloudstack_enable
+command="$"
+sig_stop="TERM"
+load_rc_config $name
+start_precmd=cloudstack_prestart
+start_cmd=cloudstack_start
+stop_cmd=cloudstack_stop
+run_rc_command "$1"
+

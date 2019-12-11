@@ -1,0 +1,35 @@
+{
+   "name":"cloudstack",
+   "release":"11.2-RELEASE",
+   "artifact":"https://github.com/freenas/iocage-plugin-cloudstack.git",
+   "properties":{
+      "dhcp": 1,
+      "allow_raw_sockets": 1,
+      "allow_mount": 1,
+      "allow_mount_devfs": 1,
+      "allow_mount_nullfs": 1,
+      "allow_mount_procfs": 1,
+      "allow_mount_tmpfs": 1,
+      "allow_mount_zfs": 1,
+      "mount_devfs": 1,
+      "mount_fdescfs": 1,
+      "mount_linprocfs": 1,
+      "mount_procfs": 1,
+      "children_max": 10,
+      "allow_chflags": 1
+   },
+   "pkgs":[
+      "databases/mysql56-server",
+      "devel/cloudstack"
+   ],
+   "packagesite":"http://pkg.cdn.trueos.org/iocage/cloudstack/development/",
+   "fingerprints":{
+      "iocage-plugins":[
+         {
+            "function":"sha256",
+            "fingerprint":"226efd3a126fb86e71d60a37353d17f57af816d1c7ecad0623c21f0bf73eb0c7"
+         }
+      ]
+   },
+   "official":true
+}
